@@ -13,10 +13,12 @@
 			<div class="form-group col-6">
 				<label>Code d'identification</label>
 				<input type="text" name="ord_id" class="form-control" />
+				<?= form_error('ord_id'); ?>
 			</div>
 			<div class="form-group col-6">
 				<label for="code">Code de la commande</label>
 				<input type="text" name="ord_code" class="form-control" />
+				<?= form_error('ord_code'); ?>
 			</div>
 		</div>
 		<div class="form-group">

@@ -8,7 +8,7 @@
 		?>
 		<div class="container row">
 			<div class="col-4">
-				<img src="<?= $original->ori_image; ?>" alt="<? $original->ori_name; ?>" style="width: 100%" />
+				<img src="<?= $original->ori_image; ?>" alt="<?= $original->ori_name; ?>" style="width: 100%" />
 			</div>
 			<div class="col-8">
 				<h3><?= $original->ori_name; ?></h3>

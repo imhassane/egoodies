@@ -15,7 +15,7 @@
 					<a class="nav-link" href="#">About</a>
 				</li>
 				<li>
-					<a class="nav-link" href="<?= base_url() . "index.php/orders/liste" ?>">Voir les commandes</a>
+					<a class="nav-link" href="<?= base_url() . "index.php/orders/liste" ?>">Suivi de commandes</a>
 				</li>
 				<li class="nav-item">
 					<a class="nav-link" href="<?= base_url() . "index.php/originals/"?>">Galerie</a>

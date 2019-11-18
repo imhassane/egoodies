@@ -23,8 +23,12 @@
 				<li class="nav-item">
 					<a class="nav-link" href="<?= base_url() . "index.php/originals/"?>">Galerie</a>
 				</li>
-				<li class="nav-item">
-					<a class="nav-link"  href="<?= base_url() . 'index.php/member/espaceadmin' ;?>"><?= $this->session->userdata('cpt_username'); ?></a>
+				<li class="dropdown">
+					<a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" href="#"><?= $this->session->userdata('cpt_username'); ?></a>
+					<div class="dropdown-menu">
+						<a class="dropdown-item" href="<?= base_url() . "index.php/member/espacevendeur" ?>">Espace vendeur</a>
+						<a class="dropdown-item" href="<?= base_url() . "index.php/member/deconnexion" ?>">Déconnexion</a>
+					</div>
 				</li>
 			</ul>
 		</div>

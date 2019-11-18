@@ -1,6 +1,6 @@
 <div>
 
-	<h2>Accès à l'espace membre</h2>
+	<h2>Accès à l'espace d'administration</h2>
 
 	<?php
 		if(isset($message)) {

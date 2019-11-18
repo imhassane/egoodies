@@ -8,7 +8,7 @@
 		$visitor = $this->session->cpt_status;
 
 		if($visitor == 'A') $this->load->view('templates/nav_admin');
-		else if($visitor == 'N') $this->load->view('templates/nav_seller');
+		else if($visitor == 'V') $this->load->view('templates/nav_seller');
 		else $this->load->view('templates/nav');
 	?>
 		<div class="container mt-3">
