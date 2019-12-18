@@ -13,6 +13,8 @@ class Member extends CI_COntroller {
 	}
 
 	public function profil() {
+		if(!$this->session->has_userdata('cpt_id'))
+			redirect('');
 		$data = array();
 
 		$profil = $this->db_model->getProfil($this->session->userdata('cpt_id'));
@@ -24,12 +26,18 @@ class Member extends CI_COntroller {
 	}
 
 	public function profils() {
+		if(!$this->session->has_userdata('cpt_status') && $this->session->userdata('cpt_status') != 'A')
+			redirect('');
+
 		$this->load->view('templates/header');
 		$this->load->view('member/profils', array('profils' => $this->db_model->getProfils()));
 		$this->load->view('templates/footer');
 	}
 
 	public function modifierMotDePasse() {
+		if(!$this->session->has_userdata('cpt_id'))
+			redirect('');
+
 		$this->load->library('form_validation');
 		$this->form_validation->set_rules('current', 'current', 'trim|required', array('required' => 'Votre mot de passe est requis'));
 		$this->form_validation->set_rules('new', 'new', 'trim|required', array('required' => 'Entrez le nouveau mot de passe'));
@@ -55,6 +63,8 @@ class Member extends CI_COntroller {
 	}
 
 	public function deconnexion() {
+		if(!$this->session->has_userdata('cpt_id'))
+			redirect('');
 		$this->session->unset_userdata(array('cpt_id', 'cpt_status'));
 		redirect('/member');
 	}
@@ -88,18 +98,23 @@ class Member extends CI_COntroller {
 	}
 
 	public function inscription() {
+		if(!$this->session->has_userdata('cpt_status') && $this->session->userdata('cpt_status') != 'A')
+			redirect('');
+
 		$this->load->library('form_validation');
 		$this->form_validation->set_rules('first_name', 'first_name', 'trim|required', array('required' => "Veuillez entrer le prenom"));
 		$this->form_validation->set_rules('last_name', 'last_name', 'trim|required', array('required' => "Veuillez entrer le nom"));
 		$this->form_validation->set_rules('email', 'email', 'trim|required|valid_email', array('required' => "Veuillez entrer une adresse email correcte"));
 		$this->form_validation->set_rules('type', 'type', 'trim|required', array('required' => "Veuillez sélectionner le type du compte"));
 		$this->form_validation->set_rules('username', 'username', 'trim|required', array('required' => "Veuillez entrez un nom d'utilisateur"));
-		$this->form_validation->set_rules('password', 'password', 'trim|required', array('required' => "Veuillez entrer le mot de passe"));
+		$this->form_validation->set_rules('password', 'password', 'trim|required|min_length[8]', array('required' => "Veuillez entrer le mot de passe"));
 		$this->form_validation->set_rules('repeat', 'repeat', 'trim|required|matches[password]', array('required' => "Veuillez repeter le mot de passe"));
 
 		if($this->form_validation->run() == FALSE) {
+			$withs = $this->db_model->getWithdrawalPoints();
+
 			$this->load->view('templates/header');
-			$this->load->view('member/register');
+			$this->load->view('member/register', array('withs' => $withs));
 			$this->load->view('templates/footer');
 		} else {
 			$data = array();

@@ -1,4 +1,4 @@
-<h2 class="mt-3 mb-3">Détails de la commande</h2>
+<h5 class="mt-3 mb-3">Détails de la commande</h5>
 
 <?php
 
@@ -22,10 +22,10 @@
 		</div>
 
 		<div class="mt-4 mb-4">
-			<h4>Goodies de la commande</h4>
+			<h5>Goodies de la commande</h5>
 			<p class="pb-4"><?= count($goodies) > 1 ? count($goodies) . " goodies" : count($goodies) . " goody" ?> dans cette commande</p>
 
-			<table class="table table-striped table-sm table-bordered table-danger">
+			<table class="table table-striped table-sm table-bordered">
 				<caption>Contenu de la commande</caption>
 				<thead>
 					<th>Nom</th>
@@ -50,8 +50,17 @@
 			</table>
 		</div>
 
-		<div class="mt-3 mb-3">
-			<a class="btn btn-danger" href="/">Supprimer</a>
+		<div class="mt-3 mb-3 row">
+			<form method="post" class="mr-2">
+				<input type="hidden" name="method" value="delete" />
+				<input type="submit" value="Supprimer" class="btn btn-danger" />
+			</form>
+			<?php if($order->ord_status == 'D' && $this->session->has_userdata('cpt_id')) { ?>
+			<form method="post">
+				<input type="hidden" name="method" value="update" />
+				<input type="submit" value="Marquer comme retirée" class="btn btn-info" />
+			</form>
+			<?php } ?>
 		</div>
 		<?php
 	}

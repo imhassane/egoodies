@@ -38,13 +38,27 @@
 			<?= form_error('repeat') ?>
 		</div>
 	</div>
-	<div class="form-group">
-		<label for="type">Type du compte à créer</label>
-		<select name="type" class="form-control">
-			<option value="V">Vendeur</option>
-			<option value="A">Administrateur</option>
-		</select>
-		<?= form_error('type') ?>
+	<div class="form-group row">
+		<div class="col-6">
+			<label for="type">Type du compte à créer</label>
+			<select name="type" class="form-control">
+				<option value="V">Vendeur</option>
+				<option value="A">Administrateur</option>
+			</select>
+			<?= form_error('type') ?>
+		</div>
+		<div class="col-6">
+			<label for="wit">Point de retrait</label>
+			<select name="wit_id" class="form-control">
+				<?php
+				foreach ($withs as $with) {
+					?>
+					<option value="<?= $with->wit_id; ?>"><?= $with->wit_name; ?></option>
+					<?php
+				}
+				?>
+			</select>
+		</div>
 	</div>
 
 	<div class="form-group">

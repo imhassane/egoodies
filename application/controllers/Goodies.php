@@ -13,6 +13,9 @@ class Goodies extends CI_Controller {
 		$types = $this->db_model->getGoodyTypes();
 		$datas['types'] = $types;
 
+
+		$datas['cart'] = $this->db_model->addToCard();
+
 		if($type != null && strtolower($type) != "all") {
 			$goodies = $this->db_model->getGoodiesByType($type);
 			$datas['goodies'] = $goodies;

@@ -8,7 +8,8 @@ class Originals extends CI_Controller {
 
 	public function index() {
 		$data = array();
-		$cat_id = $this->input->get('categorie');
+
+		$cat_id = $this->input->get('cat');
 
 		if($cat_id && $cat_id != "all") {
 			$categories = $this->db_model->getCategories();
@@ -16,15 +17,16 @@ class Originals extends CI_Controller {
 			$category = $this->db_model->getCategoryByID($cat_id);
 			$originals = $this->db_model->getOriginalsFromCategory($cat_id);
 
+			$data = array(
+				'originals' => $originals,
+				'categories' => $categories
+			);
+
 			if(is_null($category)) {
 				$data['message'] = "Cette catégorie n'existe pas";
 			} else {
 				$data['category'] = $category;
 			}
-
-			$data = array(
-				'originals' => $originals,
-				'categories' => $categories);
 
 			$this->load->view('templates/header');
 			$this->load->view('originals/index', $data);
@@ -34,7 +36,7 @@ class Originals extends CI_Controller {
 			$categories = $this->db_model->getCategories();
 			$originals = $this->db_model->gallery();
 			$this->load->view('templates/header');
-			$this->load->view('originals/index', array('originals' => $originals, 'categories' => $categories));
+			$this->load->view('originals/index', array('originals' => $originals, 'categories' => $categories, 'category' => (object) array('cat_name' => 'tout')));
 			$this->load->view('templates/footer');
 		}
 	}
@@ -46,6 +48,14 @@ class Originals extends CI_Controller {
 			$data['message'] = "Cet original n'existe pas";
 		}else {
 			$data['original'] = $original;
+
+			$qty = (int) $this->input->post('qty'); $limit = (int) $this->input->post('goo_quantity');
+
+			if($qty <= $limit)
+				$data['cart'] = $this->db_model->addToCard();
+			else
+				$data['qty_exceeded'] = "Il n'y a pas cette quantité de goodies en stock actuellement";
+
 			$data['goodies'] = $this->db_model->getOriginalGoodies($ori_id);
 		}
 

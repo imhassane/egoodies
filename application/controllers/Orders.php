@@ -6,31 +6,40 @@ class Orders extends CI_Controller {
 		$this->load->model('db_model');
 	}
 
-	public function liste() {
-		$orders = $this->db_model->getAllOrders();
-
-		$data = array();
-		$data['orders'] = $orders;
-		$this->load->view('templates/header');
-		$this->load->view('orders/index', $data);
-		$this->load->view('templates/footer');
-	}
-
 	public function details($ord_id, $ord_code) {
-		$order = $this->db_model->getOrder($ord_id, $ord_code);
-		$data = array();
-		if($order == null) {
-			$data['message'] = "La commande n'existe pas";
-		} else {
-			$data['order'] = $order;
-			// On prend les goodies de la commande.
-			$goodies = $this->db_model->getOrderGoodies($ord_id);
-			$data['goodies'] = $goodies;
-		}
+		$this->load->library('form_validation');
+		$this->form_validation->set_rules('method', 'method', 'required');
 
-		$this->load->view('templates/header');
-		$this->load->view('orders/show', $data);
-		$this->load->view('templates/footer');
+		$order = $this->db_model->getOrder($ord_id, $ord_code);
+
+		if($this->form_validation->run() == FALSE) {
+			$data = array();
+			if ($order == null) {
+				$data['message'] = "La commande n'existe pas";
+			} else {
+				$data['order'] = $order;
+				// On prend les goodies de la commande.
+				$goodies = $this->db_model->getOrderGoodies($ord_id);
+				$data['goodies'] = $goodies;
+			}
+
+			$this->load->view('templates/header');
+			$this->load->view('orders/show', $data);
+			$this->load->view('templates/footer');
+		} else {
+			$data['method'] = $this->input->post('method');
+
+			if($data['method'] == 'update') {
+				$data['order'] = $this->db_model->setOrderRetired($order->ord_id);
+			}else {
+				$data['order'] = $order;
+				$this->db_model->deleteOrder($order->ord_id);
+			}
+
+			$this->load->view('templates/header');
+			$this->load->view('orders/update', $data);
+			$this->load->view('templates/footer');
+		}
 	}
 
 	public function suivi() {
@@ -65,8 +74,17 @@ class Orders extends CI_Controller {
 			}
 		}else {
 			$this->load->view('templates/header');
-			$this->load->view('orders/index', array('orders' => array()));
+			$this->load->view('orders/index');
 			$this->load->view('templates/footer');
 		}
+	}
+
+	public function commandes() {
+		if(!$this->session->has_userdata('cpt_status') && $this->session->userdata('cpt_status') != 'V')
+			redirect('');
+		$datas['orders'] = $this->db_model->getWithdrawalPointOrders();
+		$this->load->view('templates/header');
+		$this->load->view('orders/commandes', $datas);
+		$this->load->view('templates/footer');
 	}
 }

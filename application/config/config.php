@@ -2,7 +2,8 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 
-$config['base_url'] = 'http://localhost/l3-egoodies-v2/';
+$config['base_url'] = 'http://obiwan2.univ-brest.fr/licence/lic63/v2/';
+// $config['base_url'] = 'http://localhost/l3-egoodies-v2/';
 
 /*
 |--------------------------------------------------------------------------
